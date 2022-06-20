@@ -1,5 +1,6 @@
 using CustomerSupport.Infra.CrossCutting.Common.AppContext;
 using CustomerSupport.Infra.CrossCutting.Context;
+using CustomerSupport.Infra.CrossCutting.ErrorHandling;
 using CustomerSupportAPI.Repository.Implements;
 using CustomerSupportAPI.Repository.Interfaces;
 using CustomerSupportAPI.Service.Implements;
@@ -26,6 +27,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 var app = builder.Build();
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

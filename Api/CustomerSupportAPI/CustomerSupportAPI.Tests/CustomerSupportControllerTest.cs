@@ -1,12 +1,5 @@
-﻿using CustomerSupportAPI.Controllers;
-using CustomerSupportAPI.Service.Implements;
-using CustomerSupportAPI.Service.Interfaces;
+﻿using CustomerSupportAPI.Service.Implements;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace CustomerSupportAPI.Tests

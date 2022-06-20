@@ -1,4 +1,5 @@
 ﻿using CustomerSupport.Infra.CrossCutting.Dtos;
+using CustomerSupport.Infra.CrossCutting.ErrorHandling;
 using CustomerSupportAPI.Domain;
 using CustomerSupportAPI.Repository.Interfaces;
 using CustomerSupportAPI.Service.Interfaces;
@@ -21,7 +22,7 @@ namespace CustomerSupportAPI.Service.Implements
 
         #region Methods
 
-        public Task<CustomerSupportModel> Get(int id)
+        public async Task<CustomerSupportModel> Get(int id)
         {
             throw new NotImplementedException();
         }
@@ -34,7 +35,8 @@ namespace CustomerSupportAPI.Service.Implements
         public async Task<CustomerSupportModel> Create(CustomerSupportDTO dto)
         {
             var model = new CustomerSupportModel(dto.Id.GetValueOrDefault(), dto.Email, dto.Phone, dto.Number, (int)dto.TypeInquiry, dto.Description, dto.AgreementTerms);
-            return await _customerSupportRepository.Create(model);
+            throw new Exception();
+            //return await _customerSupportRepository.Create(model);
         }
 
         public Task<CustomerSupportModel> Update(CustomerSupportDTO dto)
