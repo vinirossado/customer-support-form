@@ -23,7 +23,7 @@ namespace CustomerSupportAPI.Tests
         #region Constructors
         public CustomerSupportControllerTest()
         {
-            _sut = new Controllers.CustomerSupportController(_custumerSupportService, _custumerSupportLogger);
+            //_sut = new Controllers.CustomerSupportController(_custumerSupportService, _custumerSupportLogger);
 
         }
 

@@ -1,7 +1,7 @@
 ﻿using CustomerSupport.Infra.CrossCutting.Dtos;
 using CustomerSupportAPI.Domain;
 using CustomerSupportAPI.Repository.Interfaces;
-using CustomerSupportAPI.Service.Interfaces;
+using CustomerSupportAPI.Service.Implements;
 using Moq;
 using Xunit;
 

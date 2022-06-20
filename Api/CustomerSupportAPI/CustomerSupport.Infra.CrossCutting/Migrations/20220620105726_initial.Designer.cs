@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomerSupport.Infra.CrossCutting.Migrations
 {
     [DbContext(typeof(CustomerSupportDbContext))]
-    [Migration("20220619201308_initial")]
+    [Migration("20220620105726_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace CustomerSupport.Infra.CrossCutting.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Number")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

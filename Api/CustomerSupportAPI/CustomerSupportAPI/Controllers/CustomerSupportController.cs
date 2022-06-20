@@ -1,5 +1,6 @@
-﻿using CustomerSupport.Infra.CrossCutting.Dtos;
-using CustomerSupportAPI.Service.Implements;
+﻿using AutoMapper;
+using CustomerSupport.Infra.CrossCutting.Dtos;
+using CustomerSupportAPI.Service.Interfaces;
 using CustomerSupportAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
@@ -12,15 +13,17 @@ namespace CustomerSupportAPI.Controllers
     {
         #region Properties
         private readonly ILogger _logger;
+        private readonly IMapper _mapper;
         private readonly ICustomerSupportService _customerSupportService;
 
         #endregion Properties
 
         #region Constructors
-        public CustomerSupportController(ICustomerSupportService customerSupportService, ILogger<CustomerSupportController> logger)
+        public CustomerSupportController(ICustomerSupportService customerSupportService, ILogger<CustomerSupportController> logger, IMapper mapper)
         {
             _customerSupportService = customerSupportService;
             _logger = logger;
+            _mapper = mapper;
         }
         #endregion Constructors
 
@@ -45,18 +48,14 @@ namespace CustomerSupportAPI.Controllers
             return "value";
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<ActionResult<CustomerSupportViewModel>> Post([FromBody] CustomerSupportDTO model)
+        public async Task<ActionResult<CustomerSupportViewModel>> Create([FromBody] CustomerSupportDTO model)
         {
             if (!ModelState.IsValid)
             {
@@ -66,7 +65,12 @@ namespace CustomerSupportAPI.Controllers
             try
             {
                 var result = await _customerSupportService.Create(model);
-                return CreatedAtAction("Post", result);
+
+                _logger.LogInformation("Ticket was created", result);
+
+                var mappedCustomerSupport = _mapper.Map<CustomerSupportViewModel>(result);
+
+                return Created("Create", mappedCustomerSupport);
             }
             catch (Exception ex)
             {

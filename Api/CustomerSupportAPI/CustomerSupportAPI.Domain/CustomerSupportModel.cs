@@ -6,7 +6,8 @@
         #region Properties
         public int Id { get; private set; }
         public string Email { get; private set; }
-        public string Number { get; private set; }
+        public string Phone { get; private set; }
+        public string? Number { get; private set; }
         public int TypeInquiry { get; private set; }
         public string Description { get; private set; }
         public bool AgreementTerms { get; private set; }
@@ -15,10 +16,11 @@
 
         #region Constructors
         public CustomerSupportModel() { }
-        public CustomerSupportModel(int id, string email, string number, int typeInquiry, string description, bool agreementTerms)
+        public CustomerSupportModel(int id, string email, string phone, string? number, int typeInquiry, string description, bool agreementTerms)
         {
             Id = id;
             Email = email;
+            Phone = phone;
             Number = number;
             TypeInquiry = typeInquiry;
             Description = description;

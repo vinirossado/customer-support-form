@@ -1,10 +1,9 @@
 ﻿using CustomerSupport.Infra.CrossCutting.Dtos;
 using CustomerSupportAPI.Domain;
 using CustomerSupportAPI.Repository.Interfaces;
-using CustomerSupportAPI.Service.Implements;
-using Microsoft.Extensions.Logging;
+using CustomerSupportAPI.Service.Interfaces;
 
-namespace CustomerSupportAPI.Service.Interfaces
+namespace CustomerSupportAPI.Service.Implements
 {
     public class CustomerSupportService : ICustomerSupportService
     {
@@ -34,7 +33,7 @@ namespace CustomerSupportAPI.Service.Interfaces
 
         public async Task<CustomerSupportModel> Create(CustomerSupportDTO dto)
         {
-            var model = new CustomerSupportModel(dto.Id, dto.Email, dto.Number, (int)dto.TypeInquiry, dto.Description, dto.AgreementTerms);
+            var model = new CustomerSupportModel(dto.Id.GetValueOrDefault(), dto.Email, dto.Phone, dto.Number, (int)dto.TypeInquiry, dto.Description, dto.AgreementTerms);
             return await _customerSupportRepository.Create(model);
         }
 

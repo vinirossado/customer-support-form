@@ -34,6 +34,9 @@ namespace CustomerSupport.Infra.CrossCutting.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Number")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

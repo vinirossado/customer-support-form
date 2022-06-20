@@ -1,7 +1,7 @@
 ﻿using CustomerSupport.Infra.CrossCutting.Dtos;
 using CustomerSupportAPI.Domain;
 
-namespace CustomerSupportAPI.Service.Implements
+namespace CustomerSupportAPI.Service.Interfaces
 {
     public interface ICustomerSupportService
     {
