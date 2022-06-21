@@ -1,12 +1,6 @@
-﻿using CustomerSupport.Infra.CrossCutting.Common.AppContext;
-using CustomerSupportAPI.Domain;
+﻿using CustomerSupportAPI.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomerSupport.Infra.CrossCutting.Context
 {

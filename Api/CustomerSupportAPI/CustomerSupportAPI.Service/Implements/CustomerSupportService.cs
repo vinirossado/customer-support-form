@@ -28,9 +28,10 @@ namespace CustomerSupportAPI.Service.Implements
             {
                 throw new AppException("It's necessary to inform a valid Id");
             }
+
             var ticketDb = await _customerSupportRepository.GetAsync(id);
 
-            if (ticketDb == null)
+            if (ticketDb is null)
             {
                 throw new KeyNotFoundException("Id not found any ticket");
             }
@@ -43,10 +44,9 @@ namespace CustomerSupportAPI.Service.Implements
             return await _customerSupportRepository.GetAllAsync();
         }
 
-        public async Task<CustomerSupportModel> CreateAsync(CustomerSupportDTO dto)
+        public async Task<CustomerSupportModel> CreateAsync(CustomerSupportCreateDTO dto)
         {
-            var model = new CustomerSupportModel(dto.Id.GetValueOrDefault(),
-                                                 dto.Email,
+            var model = new CustomerSupportModel(dto.Email,
                                                  dto.Phone,
                                                  dto.Number,
                                                  (int)dto.TypeInquiry,
@@ -56,21 +56,18 @@ namespace CustomerSupportAPI.Service.Implements
             return await _customerSupportRepository.CreateAsync(model);
         }
 
-        public async Task<CustomerSupportModel> UpdateAsync(CustomerSupportDTO dto)
-        {
-            var ticketDb = await GetAsync(dto.Id.GetValueOrDefault());
-            ticketDb.UpdateEntity(dto.Id.GetValueOrDefault(), dto.Email, dto.Phone, dto.Number, (int)dto.TypeInquiry, dto.Description, dto.AgreementTerms);
+        public async Task<CustomerSupportModel> UpdateAsync(CustomerSupportUpdateDTO dto)
+        {   
+            var ticketDb = await GetAsync(dto.Id);
+
+            ticketDb.UpdateEntity(dto.Id, dto.Email, dto.Phone, dto.Number, (int)dto.TypeInquiry, dto.Description, dto.AgreementTerms);
+
             return await _customerSupportRepository.UpdateAsync(ticketDb);
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
             var ticketDb = await GetAsync(id);
-
-            if (ticketDb == null)
-            {
-                throw new KeyNotFoundException("Id not found any ticket");
-            }
 
             return await _customerSupportRepository.DeleteAsync(ticketDb);
         }

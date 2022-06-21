@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CustomerSupport.Infra.CrossCutting.Dtos;
 using CustomerSupport.Infra.CrossCutting.ErrorHandling;
-using CustomerSupportAPI.Domain;
 using CustomerSupportAPI.Service.Interfaces;
 using CustomerSupportAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -33,51 +32,33 @@ namespace CustomerSupportAPI.Controllers
 
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status501NotImplemented)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<CustomerSupportViewModel>>> GetAll()
         {
-            try
-            {
-                _logger.LogInformation("Getting all tickets");
+            _logger.LogInformation("Getting all tickets");
 
-                var result = await _customerSupportService.GetAllAsync();
-                var entityMapped = _mapper.Map<IEnumerable<CustomerSupportViewModel>>(result);
+            var result = await _customerSupportService.GetAllAsync();
+            var entityMapped = _mapper.Map<IEnumerable<CustomerSupportViewModel>>(result);
 
-                return Ok(entityMapped);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex, "Has a problem to get all tickets");
-                throw new Exception(ex.Message);
-            }
-
+            return Ok(entityMapped);
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status501NotImplemented)]
 
         public async Task<ActionResult<CustomerSupportViewModel>> Get([FromRoute] int id)
         {
-            try
-            {
-                _logger.LogInformation("Get ticket {id}", id);
 
-                var result = await _customerSupportService.GetAsync(id);
+            _logger.LogInformation("Get ticket {id}", id);
 
-                var entityMapped = _mapper.Map<CustomerSupportViewModel>(result);
+            var result = await _customerSupportService.GetAsync(id);
 
-                return Ok(entityMapped);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex, "Has a problem to get a ticket", id);
-                throw new Exception(ex.Message);
-            }
+            var entityMapped = _mapper.Map<CustomerSupportViewModel>(result);
+
+            return Ok(entityMapped);
 
         }
 
@@ -87,28 +68,21 @@ namespace CustomerSupportAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<ActionResult<CustomerSupportViewModel>> Create([FromBody] CustomerSupportDTO model)
+        public async Task<ActionResult<CustomerSupportViewModel>> Create([FromBody] CustomerSupportCreateDTO model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _logger.LogError("Has a problem to create a new customer support model is not valid", model);
                 throw new AppException("Has a problem to create a new ticket, model is not valid");
             }
-            try
-            {
-                var result = await _customerSupportService.CreateAsync(model);
 
-                _logger.LogInformation("Ticket was created", result);
+            var result = await _customerSupportService.CreateAsync(model);
 
-                var mappedCustomerSupport = _mapper.Map<CustomerSupportViewModel>(result);
+            _logger.LogInformation("Ticket was created", result);
 
-                return Created("Create", mappedCustomerSupport);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex, "Has a problem to create a new customer support");
-                throw new Exception(ex.Message);
-            }
+            var mappedCustomerSupport = _mapper.Map<CustomerSupportViewModel>(result);
+
+            return Created("Create", mappedCustomerSupport);
 
         }
 
@@ -117,25 +91,15 @@ namespace CustomerSupportAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status501NotImplemented)]
 
-        public async Task<ActionResult<CustomerSupportViewModel>> Put([FromBody] CustomerSupportDTO dto)
+        public async Task<ActionResult<CustomerSupportViewModel>> Put([FromBody] CustomerSupportUpdateDTO dto)
         {
-            try
-            {
-                _logger.LogInformation("Updating ticket", dto);
+            _logger.LogInformation("Updating ticket", dto);
 
-                var result = await _customerSupportService.UpdateAsync(dto);
-                var entityMapped = _mapper.Map<CustomerSupportViewModel>(result);
+            var result = await _customerSupportService.UpdateAsync(dto);
+            var entityMapped = _mapper.Map<CustomerSupportViewModel>(result);
 
-                return Ok(entityMapped);
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex, "Has a problem to update ticket");
-                throw new Exception(ex.Message);
-            }
+            return Ok(entityMapped);
 
         }
 
@@ -144,21 +108,11 @@ namespace CustomerSupportAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status501NotImplemented)]
 
         public async Task<ActionResult<bool>> Delete([FromRoute] int id)
         {
-            try
-            {
-                _logger.LogInformation("Starting delete Method", id);
-                return await _customerSupportService.DeleteAsync(id);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex, "Has a problem to delete ticket");
-                throw new Exception(ex.Message);
-            }
-
+            _logger.LogInformation("Starting delete method", id);
+            return await _customerSupportService.DeleteAsync(id);
         }
 
         #endregion Methods

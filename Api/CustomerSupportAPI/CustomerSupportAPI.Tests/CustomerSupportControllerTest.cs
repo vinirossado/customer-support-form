@@ -2,6 +2,7 @@
 using CustomerSupport.Infra.CrossCutting.Dtos;
 using CustomerSupport.Infra.CrossCutting.ErrorHandling;
 using CustomerSupportAPI.Controllers;
+using CustomerSupportAPI.Domain;
 using CustomerSupportAPI.Service.Interfaces;
 using CustomerSupportAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -38,11 +39,16 @@ namespace CustomerSupportAPI.Tests
         public async void ShouldCall_Create_ValidData_Return_ActionResult_CustomerSupportViewModel()
         {
 
-            var customerSupport = new CustomerSupportDTO();
+            var customerSupport = new CustomerSupportCreateDTO();
+            var ticketDb = new CustomerSupportModel();
 
-            var data = await _sut.Create(customerSupport);
+            _custumerSupportService.Setup(x => x.CreateAsync(customerSupport)).ReturnsAsync(() => ticketDb);
 
-            Assert.IsType<ActionResult<CustomerSupportViewModel>>(data);
+            await _sut.Create(customerSupport);
+
+            _custumerSupportService.Verify(service => service.CreateAsync(It.IsAny<CustomerSupportCreateDTO>()), Times.Once);
+            _mapper.Verify(x => x.Map<CustomerSupportViewModel>(ticketDb), Times.Once);
+
         }
 
         [Fact]
@@ -50,10 +56,8 @@ namespace CustomerSupportAPI.Tests
         {
             _custumerSupportService.Setup(x => x.GetAsync(It.IsAny<int>())).Throws<AppException>();
 
-            var exception = Assert.ThrowsAsync<AppException>(async () => await _sut.Get(0));
-
+            Assert.ThrowsAsync<AppException>(async () => await _sut.Get(0));
         }
-
 
         [Fact]
         public async void Task_GetPostById_MatchResult()

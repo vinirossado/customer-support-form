@@ -16,6 +16,15 @@
 
         #region Constructors
         public CustomerSupportModel() { }
+        public CustomerSupportModel(string email, string phone, string? number, int typeInquiry, string description, bool agreementTerms)
+        {
+            Email = email;
+            Phone = phone;
+            Number = number;
+            TypeInquiry = typeInquiry;
+            Description = description;
+            AgreementTerms = agreementTerms;
+        }
         public CustomerSupportModel(int id, string email, string phone, string? number, int typeInquiry, string description, bool agreementTerms)
         {
             Id = id;

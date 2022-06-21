@@ -24,13 +24,65 @@ namespace CustomerSupportAPI.Tests
         }
 
         [Fact]
-        public void ShouldCall_ReposityCreateWithDTO()
+        public void ShouldCall_ReposityCreateAsyncWithDTO()
         {
-            var dto = new CustomerSupportDTO();
+            var dto = new CustomerSupportCreateDTO();
 
             _ = _sut.CreateAsync(dto);
 
             _mockRepo.Verify(repository => repository.CreateAsync(It.IsAny<CustomerSupportModel>()), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldCall_ReposityUpdateAsyncWithDTO()
+        {
+            var customerSupport = new CustomerSupportModel();
+            var customerSupportDto = new CustomerSupportUpdateDTO() { Id = 51 };
+            var ticketDb = new CustomerSupportModel();
+
+            _mockRepo.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(() => ticketDb);
+
+            _ = _sut.UpdateAsync(customerSupportDto);
+
+            _mockRepo.Verify(repository => repository.UpdateAsync(ticketDb), Times.Once);
+        }
+
+        [Fact]
+        public async void ShouldCall_ReposityUpdateAsyncWithNullObject()
+        {
+            var customerSupportDto = new CustomerSupportUpdateDTO() { Id = 51 };
+
+            _mockRepo.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(() => null);
+
+            _ = _sut.UpdateAsync(customerSupportDto);
+
+            _mockRepo.Verify(repository => repository.UpdateAsync(It.IsAny<CustomerSupportModel>()), Times.Never);
+        }
+
+        [Fact]
+        public void ShouldCall_ReposityDeleteAsyncWithDTO()
+        {
+            var customerSupport = new CustomerSupportModel();
+            var customerSupportDto = new CustomerSupportUpdateDTO() { Id = 51 };
+            var ticketDb = new CustomerSupportModel();
+
+            _mockRepo.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(() => ticketDb);
+
+            _ = _sut.DeleteAsync(customerSupportDto.Id);
+
+            _mockRepo.Verify(repository => repository.DeleteAsync(ticketDb), Times.Once);
+        }
+
+        [Fact]
+        public async void ShouldCall_ReposityDeleteAsyncWithNullObject()
+        {
+            var customerSupportDto = new CustomerSupportUpdateDTO() { Id = 51 };
+
+            _mockRepo.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(() => null);
+
+            _ = _sut.DeleteAsync(customerSupportDto.Id);
+
+            _mockRepo.Verify(repository => repository.DeleteAsync(It.IsAny<CustomerSupportModel>()), Times.Never);
         }
 
         [Fact]
@@ -43,8 +95,8 @@ namespace CustomerSupportAPI.Tests
         [Fact]
         public async void ShouldCall_GetTicketById_Return_KeyNotFoundException()
         {
-            int? id = 33322;
-            var exception = Assert.ThrowsAsync<KeyNotFoundException>(async () => await _sut.GetAsync(id.GetValueOrDefault()));
+            _mockRepo.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(() => null);
+            var exception = Assert.ThrowsAsync<KeyNotFoundException>(async () => await _sut.GetAsync(4));
             Assert.Equal("Id not found any ticket", exception.Result.Message);
         }
 

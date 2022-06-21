@@ -1,4 +1,3 @@
-using CustomerSupport.Infra.CrossCutting.Common.AppContext;
 using CustomerSupport.Infra.CrossCutting.Context;
 using CustomerSupport.Infra.CrossCutting.ErrorHandling;
 using CustomerSupportAPI.Repository.Implements;
@@ -38,7 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-var allowedOrigins = LaunchEnvironment.AllowedOrigins.Split(";");
+var allowedOrigins = ""; /*LaunchEnvironment.AllowedOrigins.Split(";")*/;
 app.UseCors(x => x
     .WithOrigins(allowedOrigins)
     .AllowAnyMethod()
@@ -47,7 +46,7 @@ app.UseCors(x => x
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-//TODO: Apply Middleware ErrorHandler
+
 app.MapControllers();
 
 app.Run();

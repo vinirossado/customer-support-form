@@ -12,7 +12,7 @@ namespace CustomerSupportAPI.Repository.Implements
         #endregion Properties
 
         #region Constructors
-       
+
         public CustomerSupportRepository(CustomerSupportDbContext context)
         {
             _context = context;
@@ -39,7 +39,10 @@ namespace CustomerSupportAPI.Repository.Implements
 
         public async Task<CustomerSupportModel> GetAsync(int id)
         {
-            var customerSupportDb = await _context.CustomerSupport.Where(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
+            var customerSupportDb = await _context.CustomerSupport
+                                                  .Where(x => x.Id == id)
+                                                  .AsNoTracking()
+                                                  .FirstOrDefaultAsync();
             return customerSupportDb;
         }
 

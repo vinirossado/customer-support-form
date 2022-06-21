@@ -7,6 +7,7 @@ namespace CustomerSupport.Infra.CrossCutting.ErrorHandling
     public class ErrorHandlerMiddleware
     {
         private readonly RequestDelegate _next;
+        //private readonly ILogger<>
 
         public ErrorHandlerMiddleware(RequestDelegate next)
         {

@@ -8,8 +8,8 @@ namespace CustomerSupportAPI.Service.Interfaces
         #region Methods
         Task<IEnumerable<CustomerSupportModel>> GetAllAsync();
         Task<CustomerSupportModel> GetAsync(int id);
-        Task<CustomerSupportModel> CreateAsync(CustomerSupportDTO dto);
-        Task<CustomerSupportModel> UpdateAsync(CustomerSupportDTO dto);
+        Task<CustomerSupportModel> CreateAsync(CustomerSupportCreateDTO dto);
+        Task<CustomerSupportModel> UpdateAsync(CustomerSupportUpdateDTO dto);
         Task<bool> DeleteAsync(int id);
         #endregion
     }
