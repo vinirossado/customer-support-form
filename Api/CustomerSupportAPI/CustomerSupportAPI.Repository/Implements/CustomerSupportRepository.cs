@@ -12,7 +12,7 @@ namespace CustomerSupportAPI.Repository.Implements
         #endregion Properties
 
         #region Constructors
-
+       
         public CustomerSupportRepository(CustomerSupportDbContext context)
         {
             _context = context;

@@ -68,6 +68,7 @@ namespace CustomerSupportAPI.Controllers
                 _logger.LogInformation("Get ticket {id}", id);
 
                 var result = await _customerSupportService.GetAsync(id);
+
                 var entityMapped = _mapper.Map<CustomerSupportViewModel>(result);
 
                 return Ok(entityMapped);
@@ -88,7 +89,7 @@ namespace CustomerSupportAPI.Controllers
 
         public async Task<ActionResult<CustomerSupportViewModel>> Create([FromBody] CustomerSupportDTO model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _logger.LogError("Has a problem to create a new customer support model is not valid", model);
                 throw new AppException("Has a problem to create a new ticket, model is not valid");
