@@ -58,40 +58,7 @@ namespace CustomerSupportAPI.Tests
 
             Assert.ThrowsAsync<AppException>(async () => await _sut.Get(0));
         }
-
-        [Fact]
-        public async void Task_GetPostById_MatchResult()
-        {
-            //Arrange  
-            //var controller = new PostController(repository);
-            //int? postId = 1;
-
-            ////Act  
-            //var data = await controller.GetPost(postId);
-
-            ////Assert  
-            //Assert.IsType<OkObjectResult>(data);
-
-            //var okResult = data.Should().BeOfType<OkObjectResult>().Subject;
-            //var post = okResult.Value.Should().BeAssignableTo<PostViewModel>().Subject;
-
-            //Assert.Equal("Test Title 1", post.Title);
-            //Assert.Equal("Test Description 1", post.Description);
-        }
-
-        [Fact]
-        public async void Task_Add_ValidData_Return_OkResult()
-        {
-            //Arrange  
-            //var controller = new PostController(repository);
-            //var post = new Post() { Title = "Test Title 3", Description = "Test Description 3", CategoryId = 2, CreatedDate = DateTime.Now };
-
-            ////Act  
-            //var data = await controller.AddPost(post);
-
-            ////Assert  
-            //Assert.IsType<OkObjectResult>(data);
-        }
+       
         #endregion Methods
 
     }
