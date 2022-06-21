@@ -42,8 +42,9 @@ namespace CustomerSupportAPI.Controllers
             {
                 _logger.LogInformation("Getting all tickets");
 
-                var result = await _customerSupportService.GetAll();
+                var result = await _customerSupportService.GetAllAsync();
                 var entityMapped = _mapper.Map<IEnumerable<CustomerSupportViewModel>>(result);
+
                 return Ok(entityMapped);
             }
             catch (Exception ex)
@@ -66,8 +67,9 @@ namespace CustomerSupportAPI.Controllers
             {
                 _logger.LogInformation("Get ticket {id}", id);
 
-                var result = await _customerSupportService.Get(id);
+                var result = await _customerSupportService.GetAsync(id);
                 var entityMapped = _mapper.Map<CustomerSupportViewModel>(result);
+
                 return Ok(entityMapped);
             }
             catch (Exception ex)
@@ -93,7 +95,7 @@ namespace CustomerSupportAPI.Controllers
             }
             try
             {
-                var result = await _customerSupportService.Create(model);
+                var result = await _customerSupportService.CreateAsync(model);
 
                 _logger.LogInformation("Ticket was created", result);
 
@@ -122,8 +124,9 @@ namespace CustomerSupportAPI.Controllers
             {
                 _logger.LogInformation("Updating ticket", dto);
 
-                var result = await _customerSupportService.Update(dto);
+                var result = await _customerSupportService.UpdateAsync(dto);
                 var entityMapped = _mapper.Map<CustomerSupportViewModel>(result);
+
                 return Ok(entityMapped);
 
             }
@@ -147,7 +150,7 @@ namespace CustomerSupportAPI.Controllers
             try
             {
                 _logger.LogInformation("Starting delete Method", id);
-                return await _customerSupportService.Delete(id);
+                return await _customerSupportService.DeleteAsync(id);
             }
             catch (Exception ex)
             {

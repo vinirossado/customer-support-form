@@ -22,32 +22,59 @@ namespace CustomerSupportAPI.Service.Implements
 
         #region Methods
 
-        public async Task<CustomerSupportModel> Get(int id)
+        public async Task<CustomerSupportModel> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id == 0)
+            {
+                throw new AppException("It's necessary to inform a valid Id");
+            }
+            var ticketDb = await _customerSupportRepository.GetAsync(id);
+
+            if (ticketDb == null)
+            {
+                throw new KeyNotFoundException("Id not found any ticket");
+            }
+
+            return ticketDb;
         }
 
-        public Task<IEnumerable<CustomerSupportModel>> GetAll()
+        public async Task<IEnumerable<CustomerSupportModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _customerSupportRepository.GetAllAsync();
         }
 
-        public async Task<CustomerSupportModel> Create(CustomerSupportDTO dto)
+        public async Task<CustomerSupportModel> CreateAsync(CustomerSupportDTO dto)
         {
-            var model = new CustomerSupportModel(dto.Id.GetValueOrDefault(), dto.Email, dto.Phone, dto.Number, (int)dto.TypeInquiry, dto.Description, dto.AgreementTerms);
-            throw new Exception();
-            //return await _customerSupportRepository.Create(model);
+            var model = new CustomerSupportModel(dto.Id.GetValueOrDefault(),
+                                                 dto.Email,
+                                                 dto.Phone,
+                                                 dto.Number,
+                                                 (int)dto.TypeInquiry,
+                                                 dto.Description,
+                                                 dto.AgreementTerms);
+
+            return await _customerSupportRepository.CreateAsync(model);
         }
 
-        public Task<CustomerSupportModel> Update(CustomerSupportDTO dto)
+        public async Task<CustomerSupportModel> UpdateAsync(CustomerSupportDTO dto)
         {
-            throw new NotImplementedException();
+            var ticketDb = await GetAsync(dto.Id.GetValueOrDefault());
+            ticketDb.UpdateEntity(dto.Id.GetValueOrDefault(), dto.Email, dto.Phone, dto.Number, (int)dto.TypeInquiry, dto.Description, dto.AgreementTerms);
+            return await _customerSupportRepository.UpdateAsync(ticketDb);
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var ticketDb = await GetAsync(id);
+
+            if (ticketDb == null)
+            {
+                throw new KeyNotFoundException("Id not found any ticket");
+            }
+
+            return await _customerSupportRepository.DeleteAsync(ticketDb);
         }
+
         #endregion Methods
     }
 }

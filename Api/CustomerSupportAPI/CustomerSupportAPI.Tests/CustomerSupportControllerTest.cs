@@ -17,7 +17,6 @@ namespace CustomerSupportAPI.Tests
         public CustomerSupportControllerTest()
         {
             //_sut = new Controllers.CustomerSupportController(_custumerSupportService, _custumerSupportLogger);
-
         }
 
         #endregion Constructors

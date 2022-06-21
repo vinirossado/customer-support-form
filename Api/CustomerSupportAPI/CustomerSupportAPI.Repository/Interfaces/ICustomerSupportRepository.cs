@@ -1,21 +1,15 @@
-﻿using CustomerSupport.Infra.CrossCutting.Dtos;
-using CustomerSupportAPI.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CustomerSupportAPI.Domain;
 
 namespace CustomerSupportAPI.Repository.Interfaces
 {
     public interface ICustomerSupportRepository
     {
         #region Methods
-        Task<IEnumerable<CustomerSupportModel>> GetAll();
-        Task<CustomerSupportModel> Get(int id);
-        Task<CustomerSupportModel> Create(CustomerSupportModel model);
-        Task<CustomerSupportModel> Update(CustomerSupportModel model);
-        Task<bool> Delete(int id);
+        Task<IEnumerable<CustomerSupportModel>> GetAllAsync();
+        Task<CustomerSupportModel> GetAsync(int id);
+        Task<CustomerSupportModel> CreateAsync(CustomerSupportModel model);
+        Task<CustomerSupportModel> UpdateAsync(CustomerSupportModel model);
+        Task<bool> DeleteAsync(CustomerSupportModel model);
         #endregion
     }
 }

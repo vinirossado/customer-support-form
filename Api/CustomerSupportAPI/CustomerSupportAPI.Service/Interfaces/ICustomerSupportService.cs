@@ -6,11 +6,11 @@ namespace CustomerSupportAPI.Service.Interfaces
     public interface ICustomerSupportService
     {
         #region Methods
-        Task<IEnumerable<CustomerSupportModel>> GetAll();
-        Task<CustomerSupportModel> Get(int id);
-        Task<CustomerSupportModel> Create(CustomerSupportDTO dto);
-        Task<CustomerSupportModel> Update(CustomerSupportDTO dto);
-        Task<bool> Delete(int id);
+        Task<IEnumerable<CustomerSupportModel>> GetAllAsync();
+        Task<CustomerSupportModel> GetAsync(int id);
+        Task<CustomerSupportModel> CreateAsync(CustomerSupportDTO dto);
+        Task<CustomerSupportModel> UpdateAsync(CustomerSupportDTO dto);
+        Task<bool> DeleteAsync(int id);
         #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CustomerSupport.Infra.CrossCutting.Context;
 using CustomerSupportAPI.Domain;
 using CustomerSupportAPI.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CustomerSupportAPI.Repository.Implements
 {
@@ -22,31 +23,37 @@ namespace CustomerSupportAPI.Repository.Implements
 
         #region Methods
 
-        public async Task<CustomerSupportModel> Create(CustomerSupportModel model)
+        public async Task<CustomerSupportModel> CreateAsync(CustomerSupportModel model)
         {
             await _context.CustomerSupport.AddAsync(model);
             await _context.SaveChangesAsync();
             return model;
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> DeleteAsync(CustomerSupportModel model)
         {
-            throw new NotImplementedException();
+            _context.CustomerSupport.Remove(model);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<CustomerSupportModel> Get(int id)
+        public async Task<CustomerSupportModel> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            var customerSupportDb = await _context.CustomerSupport.Where(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
+            return customerSupportDb;
         }
 
-        public Task<IEnumerable<CustomerSupportModel>> GetAll()
+        public async Task<IEnumerable<CustomerSupportModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.CustomerSupport.AsNoTracking().ToListAsync();
         }
 
-        public Task<CustomerSupportModel> Update(CustomerSupportModel model)
+        public async Task<CustomerSupportModel> UpdateAsync(CustomerSupportModel model)
         {
-            throw new NotImplementedException();
+            _context.CustomerSupport.Update(model);
+            await _context.SaveChangesAsync();
+            return model;
+
         }
 
         #endregion Methods

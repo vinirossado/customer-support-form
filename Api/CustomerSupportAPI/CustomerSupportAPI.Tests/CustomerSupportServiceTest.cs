@@ -15,7 +15,6 @@ namespace CustomerSupportAPI.Tests
         private readonly Mock<ICustomerSupportRepository> mockRepo;
         #endregion Properties
 
-
         public CustomerSupportServiceTest()
         {
             mockRepo = new Mock<ICustomerSupportRepository>();

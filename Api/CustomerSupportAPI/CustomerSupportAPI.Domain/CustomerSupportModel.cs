@@ -30,7 +30,16 @@
         #endregion Constructors
 
         #region Methods
-
+        public void UpdateEntity(int id, string email, string phone, string? number, int typeInquiry, string description, bool agreementTerms)
+        {
+            Id = id;
+            Email = email;
+            Phone = phone;
+            Number = number;
+            TypeInquiry = typeInquiry;
+            Description = description;
+            AgreementTerms = agreementTerms;
+        }
         #endregion Methods
     }
 }
