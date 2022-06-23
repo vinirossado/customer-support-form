@@ -1,0 +1,108 @@
+<div class="container-fluid vh-100">
+    <div class="row vh-100 justify-content-center align-items-center">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card mx-auto">
+                <div class="card-body">
+                    <div class="row pb-2">
+                        <div class="col-12 mb-4 d-flex justify-content-center align-items-center">
+                            <img class="img-fluid" height="250" width="250" src="/assets/icons/arvato.png">
+                        </div>
+                        <div class="col py-3 pe-md-4 text-center">
+                            <form [formGroup]="customerSupportForm" class="d-grid gap-3">
+
+                                <h4>Customer Support Form</h4>
+
+                                <div class="form-floating">
+                                    <input type="text" placeholder="Email" formControlName="Email" class="form-control"
+                                        id="email">
+                                    <label for="email">Email</label>
+                                </div>
+
+                                <ng-container class="row" *ngIf="hasError('Email')">
+                                    <small class="help text-danger text-start">
+                                        {{hasError("Email")}}
+                                    </small>
+                                </ng-container>
+
+
+                                <div class="form-floating">
+                                    <input type="text" inputmode="tel" placeholder="Phone" formControlName="Phone"
+                                        class="form-control" id="phone">
+                                    <label for="phone">Phone</label>
+                                </div>
+
+                                <ng-container class="row" *ngIf="hasError('Phone')">
+                                    <small class="help text-danger text-start">
+                                        {{hasError("Phone")}}
+                                    </small>
+                                </ng-container>
+
+
+                                <div class="form-floating">
+                                    <input type="text" placeholder="Customer Number" formControlName="CustomerNumber"
+                                        class="form-control" id="customerNumber">
+                                    <label for="customerNumber">Customer Number</label>
+                                </div>
+
+                                <ng-container class="row" *ngIf="hasError('CustomerNumber')">
+                                    <small class="help text-danger text-start">
+                                        {{hasError("CustomerNumber")}}
+                                    </small>
+                                </ng-container>
+
+                                <div class="form-floating">
+                                    <select class="form-select" id="floatingSelect" formControlName="TypeOfInquiry"
+                                        aria-label="Floating label select example">
+                                        <option *ngFor="let inquiry of typesOfInquiry" [value]="inquiry.key">
+                                            {{inquiry.description}}
+                                        </option>
+                                    </select>
+                                    <label for="floatingSelect">Type of Inquiry</label>
+                                </div>
+
+                                <ng-container class="row" *ngIf="hasError('TypeOfInquiry')">
+                                    <small class="help text-danger text-start">
+                                        {{hasError("TypeOfInquiry")}}
+                                    </small>
+                                </ng-container>
+
+
+                                <div class="form-floating">
+                                    <textarea appTextareaAutoresize autocomplete="off" class="form-control"
+                                        formControlName="Description" placeholder="Leave a description here"
+                                        id="description">
+                                    </textarea>
+                                    <label for="description">Description</label>
+                                </div>
+
+                                <ng-container class="row" *ngIf="hasError('Description')">
+                                    <small class="help text-danger text-start">
+                                        {{hasError("Description")}}
+                                    </small>
+                                </ng-container>
+
+
+                                <div class="form-check text-start">
+                                    <input formControlName="AgreementTerms" class="form-check-input" type="checkbox"
+                                        id="terms">
+                                    <label class="form-check-label" for="terms">
+                                        Agree with terms
+                                    </label>
+                                </div>
+
+                                <ng-container class="row" *ngIf="hasError('AgreementTerms')">
+                                    <small class="help text-danger text-start">
+                                        {{hasError("AgreementTerms")}}
+                                    </small>
+                                </ng-container>
+
+                                <button type="submit" (click)="submit()" class="btn btn-outline-primary mt-4">Send</button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

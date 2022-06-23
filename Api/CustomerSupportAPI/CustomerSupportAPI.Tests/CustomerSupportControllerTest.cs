@@ -5,10 +5,8 @@ using CustomerSupportAPI.Controllers;
 using CustomerSupportAPI.Domain;
 using CustomerSupportAPI.Service.Interfaces;
 using CustomerSupportAPI.ViewModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
 using Xunit;
 
 namespace CustomerSupportAPI.Tests

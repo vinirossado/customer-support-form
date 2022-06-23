@@ -37,7 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-var allowedOrigins = ""; /*LaunchEnvironment.AllowedOrigins.Split(";")*/;
+var allowedOrigins = "http://localhost:4200";
 app.UseCors(x => x
     .WithOrigins(allowedOrigins)
     .AllowAnyMethod()
