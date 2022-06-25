@@ -8,18 +8,19 @@
                             <img class="img-fluid" height="250" width="250" src="/assets/icons/arvato.png">
                         </div>
                         <div class="col py-3 pe-md-4 text-center">
-                            <form [formGroup]="customerSupportForm" (submit)="submit()" class="d-grid gap-3">
+                            <form [formGroup]="customerSupportForm" novalidate="novalidate" (submit)="submit()"
+                                class="d-grid gap-3">
 
                                 <h4>Customer Support Form</h4>
 
                                 <div class="form-floating">
-                                    <input type="text" placeholder="Email" formControlName="Email" class="form-control"
-                                        id="email">
-                                    <label for="email">Email</label>
+                                    <input type="text" placeholder="Start typing" formControlName="Email"
+                                        class="form-control" id="email">
+                                    <label class="text-muted" for="email">Email (required)</label>
                                 </div>
 
                                 <ng-container class="row" *ngIf="hasError('Email')">
-                                    <small class="help text-danger text-start">
+                                    <small class="help text-danger float-start text-start">
                                         {{hasError("Email")}}
                                     </small>
                                 </ng-container>
@@ -28,24 +29,24 @@
                                 <div class="form-floating">
                                     <input type="text" inputmode="tel" placeholder="Phone" formControlName="Phone"
                                         class="form-control" id="phone">
-                                    <label for="phone">Phone</label>
-                                </div>
+                                    <label class="text-muted" for="phone">Phone (required)</label>
 
                                 <ng-container class="row" *ngIf="hasError('Phone')">
-                                    <small class="help text-danger text-start">
+                                    <small class="help text-danger float-start text-start">
                                         {{hasError("Phone")}}
                                     </small>
                                 </ng-container>
+                            </div>
 
 
                                 <div class="form-floating">
                                     <input type="text" placeholder="Customer Number" formControlName="CustomerNumber"
                                         class="form-control" id="customerNumber">
-                                    <label for="customerNumber">Customer Number</label>
+                                    <label class="text-muted" for="customerNumber">Customer Number</label>
                                 </div>
 
                                 <ng-container class="row" *ngIf="hasError('CustomerNumber')">
-                                    <small class="help text-danger text-start">
+                                    <small class="help text-danger float-start text-start">
                                         {{hasError("CustomerNumber")}}
                                     </small>
                                 </ng-container>
@@ -57,11 +58,11 @@
                                             {{inquiry.description}}
                                         </option>
                                     </select>
-                                    <label for="floatingSelect">Type of Inquiry</label>
+                                    <label class="text-muted" for="floatingSelect">Type of Inquiry (required)</label>
                                 </div>
 
                                 <ng-container class="row" *ngIf="hasError('TypeOfInquiry')">
-                                    <small class="help text-danger text-start">
+                                    <small class="help text-danger float-start text-start">
                                         {{hasError("TypeOfInquiry")}}
                                     </small>
                                 </ng-container>
@@ -72,11 +73,12 @@
                                         formControlName="Description" placeholder="Leave a description here"
                                         id="description">
                                     </textarea>
-                                    <label for="description">Description</label>
+                                    <label class="text-muted" for="description">Message
+                                        (required)</label>
                                 </div>
 
                                 <ng-container class="row" *ngIf="hasError('Description')">
-                                    <small class="help text-danger text-start">
+                                    <small class="help text-danger float-start text-start">
                                         {{hasError("Description")}}
                                     </small>
                                 </ng-container>
@@ -85,19 +87,20 @@
                                 <div class="form-check text-start">
                                     <input formControlName="AgreementTerms" class="form-check-input" type="checkbox"
                                         id="terms">
-                                    <label class="form-check-label" for="terms">
-                                        Agree with terms
+                                    <label class="text-muted" class="form-check-label" for="terms">
+                                        Yes I have read, understood and agree to the AFS IT Services Estonia OÜ Privacy
+                                        Notice
                                     </label>
                                 </div>
 
                                 <ng-container class="row" *ngIf="hasError('AgreementTerms')">
-                                    <small class="help text-danger text-start">
+                                    <small class="help text-danger float-start text-start">
                                         {{hasError("AgreementTerms")}}
                                     </small>
                                 </ng-container>
 
-                                <button class="btn btn-outline-primary mt-4" type="submit"
-                                    [disabled]="customerSupportForm.valid">
+                                <button [ngClass]="{'disabled' : !customerSupportForm.valid}" class="btn btn-outline-primary mt-4" type="submit"
+                                    [disabled]="!customerSupportForm.valid">
 
                                     <ng-container *ngIf="!(loading$ | async)">
                                         Send
