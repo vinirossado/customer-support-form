@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormComponent } from './form/form.component';
-import { FormService } from '../services';
-import { TextareaAutoresizeDirective } from '../directives/textarea-autoresize.directive';
+import { FormComponent } from './form.component';
+import { FormService } from '../../services';
+import { TextareaAutoresizeDirective } from '../../directives/textarea-autoresize.directive';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
         FormComponent,
-        TextareaAutoresizeDirective
+        TextareaAutoresizeDirective,
     ],
     imports: [
         ReactiveFormsModule,

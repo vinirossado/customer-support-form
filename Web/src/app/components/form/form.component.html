@@ -97,7 +97,7 @@
                                 </ng-container>
 
                                 <button class="btn btn-outline-primary mt-4" type="submit"
-                                    [disabled]="!customerSupportForm.valid">
+                                    [disabled]="customerSupportForm.valid">
 
                                     <ng-container *ngIf="!(loading$ | async)">
                                         Send
@@ -109,6 +109,11 @@
                                         Sending...
                                     </ng-container>
                                 </button>
+
+                                <div *ngIf="alertState" class="alert alert-success" role="alert">
+                                    {{alertMessage}}
+                                </div>
+
                             </form>
                         </div>
                     </div>

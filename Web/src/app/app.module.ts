@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormModule } from './components/form.module';
+import { FormModule } from './components/form/form.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -13,10 +14,11 @@ import { FormModule } from './components/form.module';
         CommonModule,
         FormModule,
         HttpClientModule,
+        NgbModule,
 
     ],
     providers: [],
-    exports:[],
+    exports: [],
     bootstrap: [AppComponent],
 })
 export class AppModule { }

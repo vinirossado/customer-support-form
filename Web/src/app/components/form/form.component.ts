@@ -16,11 +16,15 @@ import { FormService } from 'src/app/services';
 })
 
 export class FormComponent implements OnInit, OnDestroy {
-    customerSupportForm: FormGroup;
+    private isLoading: BehaviorSubject<boolean>;
     emailRegexPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    alertState: boolean = false;
+    alertMessage: string = "";
+
+    customerSupportForm: FormGroup;
     propertiesForm: Set<string> = new Set<string>();
     subscription: Subscription = new Subscription();
-    isLoading: BehaviorSubject<boolean>;
     loading$!: Observable<boolean>;
     readonly customerSupportFormInitialState!: FormGroup;
 
@@ -56,6 +60,7 @@ export class FormComponent implements OnInit, OnDestroy {
         this.customerSupportFormInitialState = this.customerSupportForm.value;
         this.isLoading = new BehaviorSubject<boolean>(false);
         this.loading$ = this.isLoading.asObservable();
+
     }
 
     ngOnDestroy(): void {
@@ -67,6 +72,7 @@ export class FormComponent implements OnInit, OnDestroy {
         Object.keys(this.customerSupportForm.controls).forEach(property => {
             this.propertiesForm.add(this.capitalizeFirstLetter(property));
         });
+
     }
 
     hasError(propertyForm: string): ValidationErrors | null {
@@ -86,8 +92,14 @@ export class FormComponent implements OnInit, OnDestroy {
         );
     }
 
+    handleAlert(state: boolean, message: string) {
+        this.alertState = state;
+        this.alertMessage = message;
+    }
+
     submit() {
         this.isLoading.next(true);
+
         const model = this.createObjectToSubmit(this.customerSupportForm.value);
 
         this.subscription.add(
@@ -95,6 +107,9 @@ export class FormComponent implements OnInit, OnDestroy {
                 .subscribe({
                     next: (_: CustomerSupportModel) => {
                         this.customerSupportForm.reset(this.customerSupportFormInitialState);
+                        this.handleAlert(true, "Thank you for contact us.");
+                        this.setTimoutHideAlert();
+
                     },
                     error: (fallback: HttpErrorResponse) => {
                         const errorProperty = fallback.error.errors;
@@ -103,10 +118,23 @@ export class FormComponent implements OnInit, OnDestroy {
                                 this.customerSupportForm.controls[propertyForm].setErrors({ [propertyForm]: errorProperty[propertyForm] });
                             }
                         });
+                        this.handleAlert(true, "Try again later");
+                        this.setTimoutHideAlert();
                     },
-                    complete: () => this.isLoading.next(false)
+                    complete: () => {
+
+                        this.isLoading.next(false);
+
+                    }
                 }));
     }
+
+    setTimoutHideAlert(){
+        setTimeout(() => {
+            this.alertState = false;
+        }, 2000);
+    }
+
 
     capitalizeFirstLetter(property: string) {
         return property.charAt(0).toUpperCase() + property.slice(1);

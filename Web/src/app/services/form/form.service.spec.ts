@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AppModule } from '../app.module';
-import { CustomerSupportModel } from '../models/customer-support.model';
+import { AppModule } from '../../app.module';
+import { CustomerSupportModel } from '../../models/customer-support.model';
 import { FormService } from './form.service';
 import { Observable, of } from 'rxjs';
 
