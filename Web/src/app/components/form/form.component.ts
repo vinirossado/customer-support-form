@@ -5,10 +5,9 @@ import {
     OnInit,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { CustomerSupportModel } from 'src/app/models/customer-support.model';
 import { FormService } from 'src/app/services';
-declare var page: any;
 
 @Component({
     selector: 'app-form',
@@ -21,6 +20,9 @@ export class FormComponent implements OnInit, OnDestroy {
     emailRegexPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     propertiesForm: Set<string> = new Set<string>();
     subscription: Subscription = new Subscription();
+    isLoading: BehaviorSubject<boolean>;
+    loading$!: Observable<boolean>;
+    readonly customerSupportFormInitialState!: FormGroup;
 
     typesOfInquiry = [
         {
@@ -41,7 +43,6 @@ export class FormComponent implements OnInit, OnDestroy {
     ]
 
     constructor(private _formBuilder: FormBuilder, private _formService: FormService) {
-        page = this;
 
         this.customerSupportForm = this._formBuilder.group({
             Email: [null, [Validators.required]],
@@ -52,10 +53,14 @@ export class FormComponent implements OnInit, OnDestroy {
             AgreementTerms: [false, [Validators.required]],
         });
 
+        this.customerSupportFormInitialState = this.customerSupportForm.value;
+        this.isLoading = new BehaviorSubject<boolean>(false);
+        this.loading$ = this.isLoading.asObservable();
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+        this.isLoading.complete();
     }
 
     ngOnInit(): void {
@@ -70,26 +75,37 @@ export class FormComponent implements OnInit, OnDestroy {
         return this.customerSupportForm.controls[propertyForm].errors![propertyForm];
     }
 
-    submit() {
-        const formValue = this.customerSupportForm.value;
-        var model = new CustomerSupportModel(
-            formValue.Email,
-            formValue.Phone,
-            formValue.CustomerNumber,
-            formValue.TypeOfInquiry,
-            formValue.Description,
-            formValue.AgreementTerms
+    createObjectToSubmit(formValues: any): CustomerSupportModel {
+        return new CustomerSupportModel(
+            formValues.Email,
+            formValues.Phone,
+            formValues.CustomerNumber,
+            formValues.TypeOfInquiry,
+            formValues.Description,
+            formValues.AgreementTerms
         );
-        this.subscription.add(this._formService.createTicket(model)
-            .subscribe((ret: CustomerSupportModel) => console.log(ret),
-                (fallback: HttpErrorResponse) => {
-                    const errorProperty = fallback.error.errors;
-                    this.propertiesForm.forEach((propertyForm: string) => {
-                        if (errorProperty.hasOwnProperty(propertyForm)) {
-                            this.customerSupportForm.controls[propertyForm].setErrors({ [propertyForm]: errorProperty[propertyForm] })
-                        }
-                    });
-                }))
+    }
+
+    submit() {
+        this.isLoading.next(true);
+        const model = this.createObjectToSubmit(this.customerSupportForm.value);
+
+        this.subscription.add(
+            this._formService.createTicket(model)
+                .subscribe({
+                    next: (_: CustomerSupportModel) => {
+                        this.customerSupportForm.reset(this.customerSupportFormInitialState);
+                    },
+                    error: (fallback: HttpErrorResponse) => {
+                        const errorProperty = fallback.error.errors;
+                        this.propertiesForm.forEach((propertyForm: string) => {
+                            if (errorProperty.hasOwnProperty(propertyForm)) {
+                                this.customerSupportForm.controls[propertyForm].setErrors({ [propertyForm]: errorProperty[propertyForm] });
+                            }
+                        });
+                    },
+                    complete: () => this.isLoading.next(false)
+                }));
     }
 
     capitalizeFirstLetter(property: string) {

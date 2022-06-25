@@ -10,9 +10,6 @@ export class FormService {
     constructor(private _httpClient: HttpClient) { }
 
     createTicket(model: CustomerSupportModel): Observable<CustomerSupportModel> {
-        debugger;
-        // const headers = new HttpHeaders().set('Content-Type', 'application/json');
-        // headers.set('Accept', 'application/json')
         return this._httpClient.post<CustomerSupportModel>(`${environment.apiUrl}customersupport`, model)
     }
 }
