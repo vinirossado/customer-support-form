@@ -14,7 +14,8 @@ describe('FormComponent', () => {
 
     const formBuilder: FormBuilder = new FormBuilder();
 
-    beforeEach(() => {
+
+    beforeEach(
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [
@@ -30,7 +31,9 @@ describe('FormComponent', () => {
                 ]
             }).compileComponents();
         })
+    );
 
+    beforeEach(() => {
         fixture = TestBed.createComponent(FormComponent);
         component = fixture.componentInstance;
         testBedFormBuilderService = TestBed.inject(FormBuilder);
