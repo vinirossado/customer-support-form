@@ -8,7 +8,6 @@ import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/f
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { CustomerSupportModel } from 'src/app/models/customer-support.model';
 import { FormService } from 'src/app/services';
-
 @Component({
     selector: 'app-form',
     templateUrl: './form.component.html',
@@ -27,6 +26,7 @@ export class FormComponent implements OnInit, OnDestroy {
     subscription: Subscription = new Subscription();
     loading$!: Observable<boolean>;
     readonly customerSupportFormInitialState!: FormGroup;
+    isSuccessAlert: boolean = false;
 
     typesOfInquiry = [
         {
@@ -54,7 +54,7 @@ export class FormComponent implements OnInit, OnDestroy {
             CustomerNumber: [null],
             TypeOfInquiry: [0, [Validators.required]],
             Description: ["", [Validators.required]],
-            AgreementTerms: [false, [Validators.required]],
+            AgreementTerms: [false, [Validators.requiredTrue]],
         });
 
         this.customerSupportFormInitialState = this.customerSupportForm.value;
@@ -108,28 +108,33 @@ export class FormComponent implements OnInit, OnDestroy {
                     next: (_: CustomerSupportModel) => {
                         this.customerSupportForm.reset(this.customerSupportFormInitialState);
                         this.handleAlert(true, "Thank you for contact us.");
+                        this.isLoading.next(false);
+                        this.isSuccessAlert = true;
+
                         this.setTimoutHideAlert();
 
                     },
                     error: (fallback: HttpErrorResponse) => {
-                        const errorProperty = fallback.error.errors;
-                        this.propertiesForm.forEach((propertyForm: string) => {
-                            if (errorProperty.hasOwnProperty(propertyForm)) {
-                                this.customerSupportForm.controls[propertyForm].setErrors({ [propertyForm]: errorProperty[propertyForm] });
-                            }
-                        });
-                        this.handleAlert(true, "Try again later");
-                        this.setTimoutHideAlert();
-                    },
-                    complete: () => {
+                        if (fallback.status > 0) {
+                            const errorProperty = fallback.error.errors;
+                            this.propertiesForm.forEach((propertyForm: string) => {
+                                if (errorProperty.hasOwnProperty(propertyForm)) {
+                                    this.customerSupportForm.controls[propertyForm].setErrors({ [propertyForm]: errorProperty[propertyForm] });
+                                }
+                            });
+                        }
+                        else {
+                            this.handleAlert(true, "Try again later");
+                            this.setTimoutHideAlert();
+                        }
 
                         this.isLoading.next(false);
-
+                        this.isSuccessAlert = false;
                     }
                 }));
     }
 
-    setTimoutHideAlert(){
+    setTimoutHideAlert() {
         setTimeout(() => {
             this.alertState = false;
         }, 2000);

@@ -33,6 +33,7 @@ describe('FormService', () => {
                 ],
                 providers: [FormService]
             });
+
         service = TestBed.inject(FormService);
         formServiceSpy = TestBed.inject(FormService) as jasmine.SpyObj<FormService>;
 
@@ -58,10 +59,6 @@ describe('FormService', () => {
             }
         });
     });
-
-    // it('create ticket should accept instance of CustomerSupportModel', () => {
-    //     expect(formServiceSpy.createTicket).toHaveBeenCalledWith(customerSupportModel);
-    // });
 
     it('should return an instance of Observable<CustomerSupportModel>', () => {
         const returnExpected = service.createTicket(customerSupportModel);

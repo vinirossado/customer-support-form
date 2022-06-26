@@ -8,7 +8,7 @@
                             <img class="img-fluid" height="250" width="250" src="/assets/icons/arvato.png">
                         </div>
                         <div class="col py-3 pe-md-4 text-center">
-                            <form [formGroup]="customerSupportForm" novalidate="novalidate" (submit)="submit()"
+                            <form [formGroup]="customerSupportForm" novalidate="novalidate" (ngSubmit)="submit()"
                                 class="d-grid gap-3">
 
                                 <h4>Customer Support Form</h4>
@@ -31,12 +31,12 @@
                                         class="form-control" id="phone">
                                     <label class="text-muted" for="phone">Phone (required)</label>
 
-                                <ng-container class="row" *ngIf="hasError('Phone')">
-                                    <small class="help text-danger float-start text-start">
-                                        {{hasError("Phone")}}
-                                    </small>
-                                </ng-container>
-                            </div>
+                                    <ng-container class="row" *ngIf="hasError('Phone')">
+                                        <small class="help text-danger float-start text-start">
+                                            {{hasError("Phone")}}
+                                        </small>
+                                    </ng-container>
+                                </div>
 
 
                                 <div class="form-floating">
@@ -99,7 +99,8 @@
                                     </small>
                                 </ng-container>
 
-                                <button [ngClass]="{'disabled' : !customerSupportForm.valid}" class="btn btn-outline-primary mt-4" type="submit"
+                                <button [ngClass]="{'disabled' : !customerSupportForm.valid}"
+                                    class="btn btn-outline-primary mt-4" type="submit"
                                     [disabled]="!customerSupportForm.valid">
 
                                     <ng-container *ngIf="!(loading$ | async)">
@@ -113,7 +114,8 @@
                                     </ng-container>
                                 </button>
 
-                                <div *ngIf="alertState" class="alert alert-success" role="alert">
+                                <div [ngClass]="{'alert-success' :isSuccessAlert, 'alert-danger': !isSuccessAlert }"
+                                    *ngIf="alertState" class="alert" role="alert">
                                     {{alertMessage}}
                                 </div>
 

@@ -96,7 +96,7 @@ namespace CustomerSupportAPI.Tests
         public async void ShouldCall_GetTicketById_Return_KeyNotFoundException()
         {
             _mockRepo.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(() => null);
-            var exception = Assert.ThrowsAsync<KeyNotFoundException>(async () => await _sut.GetAsync(4));
+            var exception = Assert.ThrowsAsync<KeyNotFoundException>(async () => await _sut.GetAsync(999));
             Assert.Equal("Id not found any ticket", exception.Result.Message);
         }
 

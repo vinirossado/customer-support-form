@@ -14,7 +14,7 @@ describe('FormComponent', () => {
 
     const formBuilder: FormBuilder = new FormBuilder();
 
-    beforeEach(
+    beforeEach(() => {
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [
@@ -30,9 +30,7 @@ describe('FormComponent', () => {
                 ]
             }).compileComponents();
         })
-    );
 
-    beforeEach(() => {
         fixture = TestBed.createComponent(FormComponent);
         component = fixture.componentInstance;
         testBedFormBuilderService = TestBed.inject(FormBuilder);
@@ -86,8 +84,6 @@ describe('FormComponent', () => {
         const createdObject = component.createObjectToSubmit(formValues);
         expect(typeof (new CustomerSupportModel("", "", "", 0, "", false))).toEqual(typeof (createdObject))
     });
-
-
 
     it('should be created', () => {
         expect(component).toBeTruthy();
