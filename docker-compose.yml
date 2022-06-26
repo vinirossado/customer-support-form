@@ -1,0 +1,16 @@
+version: '3'
+services:
+  web:
+    # image:
+    build:
+      dockerfile: ./Dockerfile
+      context: './Web'
+    ports:
+      - 4200:80
+  api:
+    # image:
+    build:
+      dockerfile: ./CustomerSupportAPI/Dockerfile
+      context: './Api/CustomerSupportAPI'
+    ports:
+      - 7227:80

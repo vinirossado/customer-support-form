@@ -4,6 +4,7 @@ using CustomerSupportAPI.Repository.Implements;
 using CustomerSupportAPI.Repository.Interfaces;
 using CustomerSupportAPI.Service.Implements;
 using CustomerSupportAPI.Service.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -25,9 +26,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
+
 var app = builder.Build();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<CustomerSupportDbContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

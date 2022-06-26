@@ -12,7 +12,7 @@ RUN dotnet restore "CustomerSupportAPI/CustomerSupportAPI.csproj"
 COPY . .
 WORKDIR "/src/CustomerSupportAPI"
 RUN dotnet build "CustomerSupportAPI.csproj" -c Release -o /app/build
-
+    
 FROM build AS publish
 RUN dotnet publish "CustomerSupportAPI.csproj" -c Release -o /app/publish
 
